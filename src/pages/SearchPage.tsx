@@ -7,6 +7,7 @@ import SearchResultInfo from '@/components/SearchResultInfo';
 import SortOptionDropdown from '@/components/SortOptionDropdown';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Spinner from '@/components/ui/Spinner';
 
 export type SearchState = {
   searchQuery: string;
@@ -27,7 +28,7 @@ const SearchPage = () => {
 
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
-  const { results, isLoading } = useSearchRestaurants(searchState, city);
+  const { results, isFetching } = useSearchRestaurants(searchState, city);
 
   const setSortOption = (sortOption: string) => {
     setSearchState((prevState) => ({
@@ -68,8 +69,8 @@ const SearchPage = () => {
     }));
   };
 
-  if (isLoading) {
-    <span>Loading ...</span>;
+  if (isFetching) {
+    return <Spinner />;
   }
 
   if (!results?.data || !city) {
